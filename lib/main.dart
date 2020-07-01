@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenttracking/screens/add_student.dart';
 
 import 'models/student.dart';
 
@@ -15,11 +16,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  String seciliOgrenci = "";
+  Student selectedStudent = Student.withId(0, "", "", 0);
 
   List<Student> students = [
-    Student("Yasin","Akca",60),
-    Student("Emir","Parlak",40)
+    Student.withId(1,"Yasin","Akca",60),
+    Student.withId(2,"Emir","Parlak",40)
   ];
 
   @override
@@ -48,33 +49,72 @@ class _MyAppState extends State<MyApp> {
                   trailing: buildIcon(students[index].grade),
                   onTap: () {
                     setState(() {
-                      seciliOgrenci = students[index].firstName;
+                      selectedStudent = students[index];
                     });
                   },
                 );
               }
           ),
         ),
-        Text(seciliOgrenci),
-        Center(
-            child: RaisedButton(
-              child: Text("See the result"),
-              onPressed: () {
-                String message;
-                int grade = 50;
-                if(grade > 50) {
-                  message = "Passed";
-                }else {
-                  message = "Failed";
-                }
-                var alert = AlertDialog(
-                  title: Text("Alert"),
-                  content: Text(message),
-                );
-                showDialog(context: context, builder: (BuildContext context) => alert);
-              },
+        Text(selectedStudent.firstName),
+        Row(
+          children: <Widget>[
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 1,
+              child: RaisedButton(
+                color: Colors.amberAccent,
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.add),
+                    SizedBox(width: 5),
+                    Text("Add")
+                  ],
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddStudent()));
+                },
+              ),
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 1,
+              child: RaisedButton(
+                color: Colors.blueAccent,
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.update),
+                    SizedBox(width: 5),
+                    Text("Update")
+                  ],
+                ),
+                onPressed: () {
+
+                },
+              ),
+            ),
+            Flexible(
+              fit: FlexFit.tight,
+              flex: 1,
+              child: RaisedButton(
+                color: Colors.purpleAccent,
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.delete),
+                    SizedBox(width: 5),
+                    Text("Delete")
+                  ],
+                ),
+                onPressed: () {
+                  setState(() {
+                    students.remove(selectedStudent);
+                    selectedStudent = Student.withId(0, "", "", 0);
+                  });
+                },
+              ),
             )
-        ),
+          ],
+        )
       ],
     );
   }
