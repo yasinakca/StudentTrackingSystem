@@ -8,11 +8,20 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  String seciliOgrenci = "";
+
   List<Student> students = [
     Student("Yasin","Akca",60),
     Student("Emir","Parlak",40)
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +46,16 @@ class MyApp extends StatelessWidget {
                   title: Text(students[index].firstName + " " + students[index].lastName),
                   subtitle: Text(students[index].grade.toString()),
                   trailing: buildIcon(students[index].grade),
+                  onTap: () {
+                    setState(() {
+                      seciliOgrenci = students[index].firstName;
+                    });
+                  },
                 );
               }
           ),
         ),
+        Text(seciliOgrenci),
         Center(
             child: RaisedButton(
               child: Text("See the result"),
