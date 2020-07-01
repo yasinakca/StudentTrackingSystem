@@ -16,4 +16,6 @@ class Student{
     this.lastName = lastName;
     this.grade = grade;
   }
+
+  Student.withoutInfo() {}
 }
