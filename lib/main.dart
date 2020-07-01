@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddStudent()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddStudent(students)));
                 },
               ),
             ),

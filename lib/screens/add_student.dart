@@ -3,15 +3,30 @@ import 'package:studenttracking/models/student.dart';
 import 'package:studenttracking/validator/student_validation.dart';
 
 class AddStudent extends StatefulWidget{
+
+  List<Student> students;
+
+  AddStudent(List<Student> students) {
+    this.students = students;
+  }
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _AddStudentState();
+    return _AddStudentState(students);
   }
 
 }
 
 class _AddStudentState extends State<AddStudent> with StudentValidationMixin{
+
+  List<Student> students;
+
+  _AddStudentState(List<Student> students) {
+    this.students = students;
+  }
+
+  var formKey = GlobalKey<FormState>();
   Student student = Student.withoutInfo();
   @override
   Widget build(BuildContext context) {
@@ -21,12 +36,15 @@ class _AddStudentState extends State<AddStudent> with StudentValidationMixin{
         title: Text("Add Student"),
       ),
       body: Container(
+        margin: EdgeInsets.all(20.0),
         child: Form(
+          key: formKey,
           child: Column(
             children: <Widget>[
               buildFirstNameField(),
               buildLastNameField(),
-              buildGradeField()
+              buildGradeField(),
+              buildSubmitButton()
             ],
           ),
         ),
@@ -60,6 +78,19 @@ class _AddStudentState extends State<AddStudent> with StudentValidationMixin{
       validator: validateGrade,
       onSaved: (String value) {
         student.grade = int.parse(value);
+      },
+    );
+  }
+
+  Widget buildSubmitButton() {
+    return RaisedButton(
+      child: Text("Save"),
+      onPressed: () {
+        if(formKey.currentState.validate()) {
+          formKey.currentState.save();
+          students.add(student);
+          print("Success");
+        }
       },
     );
   }
